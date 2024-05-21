@@ -1,0 +1,11 @@
+html, body {
+    height: 100%;
+}
+
+.auth-page {
+	max-width: 300px;
+}
+
+.alert {
+    font-size: small;
+}

@@ -1,0 +1,91 @@
+/* 
+========================
+
+	S I D E  B A R
+
+========================
+*/
+
+.sidebar {
+	max-width: 200px;
+}
+
+.sidebar a {
+	color: black;
+}
+
+.sidebar a:hover,
+.sidebar a:focus {
+	color: black;
+	background-color: white;
+}
+
+.sidebar a > * {
+	transition: all 0.2s ease-in;
+}
+
+.sidebar a:hover > * {
+	transform: translateX(1px);
+}
+
+/* 
+========================
+
+	C O N T E N T
+
+========================
+*/
+
+content {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+@media (min-width: 1799px) {
+	content {
+		flex-direction: row;
+		justify-content: start;
+	}
+}
+
+/* 
+========================
+
+	T A B L E
+
+========================
+*/
+
+.master-data {
+	width: 100%;
+	max-width: 750px;
+}
+
+@media (min-width: 1799px) {
+	.master-data {
+		height: 100%;
+		width: 380px;
+	}
+}
+/* 
+========================
+
+	M A P
+
+========================
+*/
+
+.map {
+	width: 100%;
+	max-width: 1100px;
+	height: 35rem;
+}
+
+@media (min-width: 1799px) {
+	.map {
+		width: 1100px;
+		height: 40rem;
+	}
+}
