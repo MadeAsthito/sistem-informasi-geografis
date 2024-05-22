@@ -78,3 +78,45 @@ function register() {
 			}
 		});
 }
+
+function logout() {
+	var token = localStorage.getItem("token");
+
+	var confirmed = confirm(
+		"Are you sure wanted to log out? Click OK if you wanted to proceed"
+	);
+	if (confirmed) {
+		var api_url = localStorage.getItem("api_main_url");
+
+		var res_url = api_url + "/api/logout";
+
+		var headers = {
+			Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+			"Content-Type": "application/json", // Specify the content type as JSON
+		};
+		axios
+			.get(res_url, {
+				headers,
+			})
+			.then((response) => {
+				// Populate the input field for input with id :
+				// name
+				// description
+				// email
+				// phoneNumber
+				alert("Logging Out successfull!");
+				localStorage.removeItem("token");
+				localStorage.removeItem("user");
+				localStorage.removeItem("api_url");
+
+				window.location.href = "/login.html";
+			})
+			.catch((error) => {
+				// Handle error
+				console.error("Logging Out Failed:", error);
+				alert("Logging Out Failed!");
+			});
+
+		console.log("Logging Out");
+	}
+}
