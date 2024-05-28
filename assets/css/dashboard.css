@@ -1,3 +1,52 @@
+:root {
+	--col-primary: #3b3bce;
+	--col-secondary: #615efc;
+	--col-accent: #5858ec;
+	--col-warning: #db9459;
+	--col-warning-dark: #ff9a00;
+}
+
+#username {
+	text-transform: capitalize;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+	background-color: var(--col-secondary);
+}
+
+.nav-link {
+	color: var(--bs-heading);
+}
+
+.nav-link:hover {
+	color: var(--col-secondary);
+}
+
+.btn-primary {
+	background-color: var(--col-secondary);
+	border-color: var(--col-secondary);
+}
+
+.btn-primary:hover {
+	background-color: var(--col-primary);
+	border-color: var(--col-primary);
+}
+
+.btn-secondary {
+	background-color: var(--col-warning-dark);
+	border-color: var(--col-warning-dark);
+}
+
+.btn-secondary:hover {
+	background-color: var(--col-warning);
+	border-color: var(--col-warning);
+}
+
+.leaflet-popup-content {
+	width: 180px;
+}
+
 /* 
 ========================
 
@@ -12,6 +61,7 @@
 
 .sidebar a {
 	color: black;
+	cursor: pointer;
 }
 
 .sidebar a:hover,
@@ -47,7 +97,12 @@ content {
 	content {
 		flex-direction: row;
 		justify-content: start;
+		align-items: start;
 	}
+}
+
+.dashboard-content {
+	position: relative;
 }
 
 /* 
@@ -59,14 +114,19 @@ content {
 */
 
 .master-data {
-	width: 100%;
-	max-width: 750px;
+	position: absolute;
+	bottom: 2rem;
+	z-index: 10000000;
+	width: 90%;
+	max-width: 1000px;
 }
 
 @media (min-width: 1799px) {
 	.master-data {
+		position: static;
 		height: 100%;
-		width: 380px;
+		min-width: 380px;
+		max-width: 750px;
 	}
 }
 /* 
@@ -79,13 +139,11 @@ content {
 
 .map {
 	width: 100%;
-	max-width: 1100px;
-	height: 35rem;
+	height: 80dvh;
 }
 
 @media (min-width: 1799px) {
 	.map {
-		width: 1100px;
-		height: 40rem;
+		max-width: 1300px;
 	}
 }

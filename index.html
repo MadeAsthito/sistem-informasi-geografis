@@ -34,8 +34,12 @@
 			rel="stylesheet"
 			href="./assets/vendor/leaflet/leaflet-routing-machine.css"
 		/>
+		<script src="https://unpkg.com/@mapbox/polyline"></script>
 
 		<link rel="stylesheet" href="./assets/css/dashboard.css" />
+
+		<!-- Axios JS -->
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	</head>
 	<body class="d-flex">
 		<sidebar
@@ -57,63 +61,42 @@
 		<!-- MAIN CONTENT -->
 		<main class="flex-fill d-flex flex-column">
 			<header class="bg-body-tertiary w-100 p-4 text-end">
-				<p class="m-0">Hello, <span class="h6">Made Asthito</span>!</p>
+				<p class="m-0">Hello, <span id="username" class="h6"></span>!</p>
 			</header>
-			<content class="px-3 py-5">
+			<!-- DYNAMIC CONTENT -->
+			<content class="dashboard-content px-3 py-5">
 				<div class="map rounded-2 mx-5 mb-3" id="mainMap"></div>
+
 				<div class="master-data card">
 					<div class="card-body">
 						<div class="card-title d-flex justify-content-between">
-							<h5>Data Jalan</h5>
-							<button class="btn btn-primary">Add Data</button>
+							<h3 class="m-0">Data Ruas Jalan</h3>
+							<a href="./add_data.html" class="btn btn-primary">Add Data</a>
 						</div>
+						<hr />
 						<table class="table table-hover">
 							<thead>
 								<tr>
-									<th scope="col">#</th>
-									<th scope="col">Column1</th>
-									<th scope="col">Column2</th>
-									<th scope="col">Column3</th>
+									<th class="text-center" scope="col">#</th>
+									<th scope="col">Kode Ruas</th>
+									<th scope="col">Nama Ruas</th>
+									<th scope="col">Desa</th>
+									<th class="text-center" scope="col">Panjang</th>
+									<th class="text-center" scope="col">Lebar</th>
+									<th class="text-center" scope="col"></th>
+									<th class="text-center" scope="col"></th>
 								</tr>
 							</thead>
-							<tbody>
-								<tr>
-									<th scope="row">1</th>
-									<td>Data1</td>
-									<td>Data2</td>
-									<td>Data3</td>
-								</tr>
-								<tr>
-									<th scope="row">2</th>
-									<td>Data1</td>
-									<td>Data2</td>
-									<td>Data3</td>
-								</tr>
-								<tr>
-									<th scope="row">3</th>
-									<td>Data1</td>
-									<td>Data2</td>
-									<td>Data3</td>
-								</tr>
-								<tr>
-									<th scope="row">4</th>
-									<td>Data1</td>
-									<td>Data2</td>
-									<td>Data3</td>
-								</tr>
-								<tr>
-									<th scope="row">5</th>
-									<td>Data1</td>
-									<td>Data2</td>
-									<td>Data3</td>
-								</tr>
-							</tbody>
+							<tbody id="data-table"></tbody>
 						</table>
 					</div>
 				</div>
 			</content>
+			<!-- END DYNAMIC CONTENT -->
 		</main>
+		<!-- END MAIN CONTENT -->
 		<script src="./assets/js/auth.js"></script>
-		<script src="./assets/js/map.js"></script>
+		<script src="./assets/js/mapDashboard.js"></script>
 	</body>
 </html>
+

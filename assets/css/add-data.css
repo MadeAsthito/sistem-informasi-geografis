@@ -1,0 +1,39 @@
+.input-data {
+	z-index: 100000000;
+	margin-top: -10rem;
+	width: 90%;
+	height: 590px;
+}
+
+.card-form {
+	width: 380px;
+}
+
+@media (min-width: 1799px) {
+	.input-data {
+		position: static;
+		max-width: 400px;
+		height: 100%;
+		margin-top: 0;
+	}
+
+	.card-form {
+		width: auto;
+	}
+}
+
+.map {
+	width: 100%;
+	height: 50dvw;
+}
+
+@media (min-width: 1799px) {
+	.map {
+		max-width: 1300px;
+		height: 80dvh;
+	}
+}
+
+option {
+	text-transform: capitalize;
+}

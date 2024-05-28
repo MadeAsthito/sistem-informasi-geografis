@@ -1,22 +1,59 @@
+document.addEventListener("DOMContentLoaded", function () {
+	// CHECK IF NOT IN LOGIN / REGISTER PAGE
+	const noAuth = ["/login.html", "/register.html"];
+	if (!noAuth.includes(window.location.pathname)) {
+		// CHECK TOKEN
+		const token = localStorage.getItem("token");
+		if (!token) {
+			window.location.href = "/login.html";
+		}
+
+		// GET USER
+		let userName = localStorage.getItem("username");
+		const el_name = document.getElementById("username");
+		if (!userName) {
+			let api_main_url = localStorage.getItem("api_main_url");
+			let res_url = api_main_url + "api/user";
+			let headers = {
+				Authorization: `Bearer ${token}`,
+				"Content-Type": "application/json",
+			};
+			console.log("GET USER");
+			axios
+				.get(res_url, { headers })
+				.then((response) => {
+					let dataResponse = response.data.data;
+					let userName = dataResponse.user.name;
+
+					localStorage.setItem("username", userName);
+					el_name.innerHTML = userName;
+				})
+				.catch((error) => {
+					// Handle error
+					console.error("Get Data User Failed:", error);
+					alert("Get Data User Failed!");
+				});
+		} else {
+			el_name.innerHTML = userName;
+		}
+	}
+});
+
 function login() {
 	console.log("login start");
 
-	// Retrieve username and password from the form
-	var el_warning = document.getElementById("warningSign");
+	// GET DATA LOGIN
+	let el_warning = document.getElementById("warningSign");
 
-	var el_email = document.getElementById("email");
-	var email = el_email.value;
+	let el_email = document.getElementById("email");
+	let email = el_email.value;
 
-	var el_password = document.getElementById("password");
-	var password = el_password.value;
+	let el_password = document.getElementById("password");
+	let password = el_password.value;
 
-	var api_main_url = "https://gisapis.manpits.xyz/";
-	var res_url = api_main_url + "api/login";
-
-	console.log("email : " + email);
-	console.log("password : " + password);
-	console.log("res_url : " + res_url);
-
+	// POST DATA LOGIN
+	let api_main_url = "https://gisapis.manpits.xyz/";
+	let res_url = api_main_url + "api/login";
 	axios
 		.post(res_url, {
 			email: email,
@@ -24,7 +61,7 @@ function login() {
 		})
 		.then((response) => {
 			console.log(response.data);
-			var res_data = response.data.meta;
+			let res_data = response.data.meta;
 			console.log(res_data);
 			localStorage.setItem("token", res_data.token);
 			localStorage.setItem("email_user", email);
@@ -43,20 +80,21 @@ function login() {
 function register() {
 	console.log("register start");
 
-	var el_warning = document.getElementById("warningSign");
+	// GET DATA REGISTER
+	let el_warning = document.getElementById("warningSign");
 
-	var el_name = document.getElementById("fullname");
-	var name = el_name.value;
+	let el_name = document.getElementById("fullname");
+	let name = el_name.value;
 
-	var el_email = document.getElementById("email");
-	var email = el_email.value;
+	let el_email = document.getElementById("email");
+	let email = el_email.value;
 
-	var el_password = document.getElementById("password");
-	var password = el_password.value;
+	let el_password = document.getElementById("password");
+	let password = el_password.value;
 
-	var api_main_url = "https://gisapis.manpits.xyz/";
-	var res_url = api_main_url + "api/register";
-
+	// POST DATA REGISTER
+	let api_main_url = "https://gisapis.manpits.xyz/";
+	let res_url = api_main_url + "api/register";
 	axios
 		.post(res_url, {
 			name: name,
@@ -65,7 +103,7 @@ function register() {
 		})
 		.then((response) => {
 			console.log(response.data);
-			var message = response.data.meta.message;
+			let message = response.data.meta.message;
 
 			if (message == "Successfully create user") {
 				window.location.href = "/login.html";
@@ -80,24 +118,28 @@ function register() {
 }
 
 function logout() {
-	var token = localStorage.getItem("token");
+	let token = localStorage.getItem("token");
 
-	var confirmed = confirm(
+	let confirmed = confirm(
 		"Are you sure wanted to log out? Click OK if you wanted to proceed"
 	);
 	if (confirmed) {
-		var api_url = localStorage.getItem("api_main_url");
+		let api_main_url = localStorage.getItem("api_main_url");
 
-		var res_url = api_url + "/api/logout";
+		let res_url = api_main_url + "api/logout";
 
-		var headers = {
+		let headers = {
 			Authorization: `Bearer ${token}`, // Include the token in the Authorization header
 			"Content-Type": "application/json", // Specify the content type as JSON
 		};
 		axios
-			.get(res_url, {
-				headers,
-			})
+			.post(
+				res_url,
+				{},
+				{
+					headers,
+				}
+			)
 			.then((response) => {
 				// Populate the input field for input with id :
 				// name
