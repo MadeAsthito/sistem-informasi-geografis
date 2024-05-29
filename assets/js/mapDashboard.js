@@ -84,6 +84,18 @@ document.addEventListener("DOMContentLoaded", async function () {
 						<p class="m-0"> ${lng}</p>
 					</div>
 				</div>
+				<div class="row">
+					<div class="col px-0 py-2">
+						<a class="text-warning text-center" href="/edit_data.html?id=${
+							data_ruas.id
+						}">Edit Data</a>
+					</div>
+					<div class="col px-0 py-2">
+						<a class="text-danger text-center" onclick="deleteData(${
+							data_ruas.id
+						})">Delete Data</a>
+					</div>
+				</div>
 			</div>
 		`;
 	};

@@ -10,8 +10,12 @@
 	text-transform: capitalize;
 }
 
+a {
+	cursor: pointer;
+}
+
 .nav-pills .nav-link.active,
-.nav-pills .show>.nav-link {
+.nav-pills .show > .nav-link {
 	background-color: var(--col-secondary);
 }
 
@@ -61,7 +65,6 @@
 
 .sidebar a {
 	color: black;
-	cursor: pointer;
 }
 
 .sidebar a:hover,
@@ -70,11 +73,11 @@
 	background-color: white;
 }
 
-.sidebar a>* {
+.sidebar a > * {
 	transition: all 0.2s ease-in;
 }
 
-.sidebar a:hover>* {
+.sidebar a:hover > * {
 	transform: translateX(1px);
 }
 
