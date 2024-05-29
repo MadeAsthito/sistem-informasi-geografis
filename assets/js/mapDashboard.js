@@ -125,8 +125,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 		namaRuasCell.textContent = data_ruas.nama_ruas;
 		namaRuasCell.style.textAlign = "left";
 
+		let data_desa = data_region.desa.find((k) => k.id == data_ruas.desa_id);
 		let desaCell = row.insertCell();
-		desaCell.textContent = data_ruas.desa_id;
+		desaCell.textContent = data_desa.desa;
 		desaCell.style.textAlign = "left";
 
 		let panjangCell = row.insertCell();
