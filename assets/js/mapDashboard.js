@@ -174,3 +174,33 @@ document.addEventListener("DOMContentLoaded", async function () {
 		i++;
 	});
 });
+
+function deleteData(id) {
+	var token = localStorage.getItem("token");
+
+	var confirmed = confirm(
+		"Are you sure wanted to delete this data? Click OK if you wanted to proceed"
+	);
+	if (confirmed) {
+		const api_main_url = localStorage.getItem("api_main_url");
+		const res_url = api_main_url + "api/ruasjalan/" + id;
+		const headers = {
+			Authorization: `Bearer ${token}`,
+			"Content-type": "application/json",
+		};
+		axios
+			.delete(res_url, {
+				headers,
+			})
+			.then((response) => {
+				alert("Data successfully deleted");
+				window.location.href = "/index.html";
+			})
+			.catch((error) => {
+				console.error("Data failed deleted:", error);
+				alert("Data failed deleted. Please check your data and credentials.");
+			});
+
+		console.log("deleting data for #" + id_restaurant);
+	}
+}
