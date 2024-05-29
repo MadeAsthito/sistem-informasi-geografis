@@ -162,3 +162,7 @@ function logout() {
 		console.log("Logging Out");
 	}
 }
+
+function goToDashboard() {
+	window.location.href = "index.html";
+}

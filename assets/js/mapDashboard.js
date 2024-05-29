@@ -9,7 +9,19 @@ document.addEventListener("DOMContentLoaded", async function () {
 		maxZoom: 18,
 	}).addTo(mainMap);
 
+	const token = localStorage.getItem("token");
+	const api_main_url = localStorage.getItem("api_main_url");
+	let res_url = api_main_url + "api/mregion";
+	const headers = {
+		Authorization: `Bearer ${token}`,
+		"Content-type": "application/json",
+	};
+	const data_region = await axios.get(res_url, { headers }).then((response) => {
+		return response.data;
+	});
+
 	formatContentRuas = function (status, data_ruas, lat, lng) {
+		let data_desa = data_region.desa.find((k) => k.id == data_ruas.desa_id);
 		return `
 			<h6 class="m-0 text-center">
 				<b>${data_ruas.kode_ruas} | ${data_ruas.nama_ruas}</b>
@@ -25,7 +37,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 						<p class="m-0">:</p>
 					</div>
 					<div class="col p-0">
-						<p class="m-0">${data_ruas.desa_id}</p>
+						<p class="m-0">${data_desa.desa}</p>
 					</div>
 				</div>
 				<div class="row">
@@ -87,10 +99,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 		}).addTo(mainMap);
 		L.marker([startPoint[0], startPoint[1]])
 			.addTo(mainMap)
-			.bindPopup(formatContentRuas('Start', data_ruas, startPoint[0], startPoint[1]));
+			.bindPopup(
+				formatContentRuas("Start", data_ruas, startPoint[0], startPoint[1])
+			);
 		L.marker([endPoint[0], endPoint[1]])
 			.addTo(mainMap)
-			.bindPopup(formatContentRuas('End', data_ruas, endPoint[0], endPoint[1]));
+			.bindPopup(formatContentRuas("End", data_ruas, endPoint[0], endPoint[1]));
 	}
 
 	function addDataRuas(idTable, data_ruas, iterasi) {
@@ -155,13 +169,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 		deleteCell.appendChild(deleteButton);
 	}
 
-	const token = localStorage.getItem("token");
-	const api_main_url = localStorage.getItem("api_main_url");
-	const res_url = api_main_url + "api/ruasjalan";
-	const headers = {
-		Authorization: `Bearer ${token}`,
-		"Content-type": "application/json",
-	};
+	res_url = api_main_url + "api/ruasjalan";
 	const data_ruas = await axios.get(res_url, { headers }).then((response) => {
 		return response.data;
 	});

@@ -55,7 +55,10 @@
 			<hr />
 			<ul class="nav nav-pills flex-column justify-content-center mb-auto">
 				<li class="nav-item">
-					<a href="" class="nav-link d-flex align-items-center gap-2">
+					<a
+						onclick="goToDashboard()"
+						class="nav-link d-flex align-items-center gap-2"
+					>
 						<span class="material-icons-sharp"> map </span>
 						<p class="m-0">Dashboard</p></a
 					>
@@ -149,15 +152,15 @@
 											</div>
 											<div class="data-input mb-3">
 												<label for="lebar">Lebar Ruas</label>
-												<input
-													type="number"
-													class="form-control"
-													id="lebar"
-												/>
+												<input type="number" class="form-control" id="lebar" />
 											</div>
 											<div class="data-input mb-3">
 												<label for="keterangan">Keterangan</label>
-												<textarea class="form-control" id="keterangan" rows="3"></textarea>
+												<textarea
+													class="form-control"
+													id="keterangan"
+													rows="3"
+												></textarea>
 											</div>
 										</div>
 									</div>
@@ -226,7 +229,9 @@
 													class="form-select"
 													aria-label="Default select example"
 												>
-													<option value="" selected>Pilih Jenis Jalan...</option>
+													<option value="" selected>
+														Pilih Jenis Jalan...
+													</option>
 												</select>
 											</div>
 											<div class="data-input mb-3">
@@ -250,7 +255,9 @@
 													class="form-select"
 													aria-label="Default select example"
 												>
-													<option value="" selected>Pilih Kondisi Jalan...</option>
+													<option value="" selected>
+														Pilih Kondisi Jalan...
+													</option>
 												</select>
 											</div>
 										</div>
