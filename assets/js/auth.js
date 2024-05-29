@@ -149,6 +149,7 @@ function logout() {
 				alert("Logging Out successfull!");
 				localStorage.removeItem("token");
 				localStorage.removeItem("user");
+				localStorage.removeItem("username");
 				localStorage.removeItem("api_url");
 
 				window.location.href = "/login.html";
