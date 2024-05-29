@@ -6,35 +6,35 @@ document.addEventListener("DOMContentLoaded", function () {
 		const token = localStorage.getItem("token");
 		if (!token) {
 			window.location.href = "/login.html";
-		}
-
-		// GET USER
-		let userName = localStorage.getItem("username");
-		const el_name = document.getElementById("username");
-		if (!userName) {
-			let api_main_url = localStorage.getItem("api_main_url");
-			let res_url = api_main_url + "api/user";
-			let headers = {
-				Authorization: `Bearer ${token}`,
-				"Content-Type": "application/json",
-			};
-			console.log("GET USER");
-			axios
-				.get(res_url, { headers })
-				.then((response) => {
-					let dataResponse = response.data.data;
-					let userName = dataResponse.user.name;
-
-					localStorage.setItem("username", userName);
-					el_name.innerHTML = userName;
-				})
-				.catch((error) => {
-					// Handle error
-					console.error("Get Data User Failed:", error);
-					alert("Get Data User Failed!");
-				});
 		} else {
-			el_name.innerHTML = userName;
+			// GET USER
+			let userName = localStorage.getItem("username");
+			const el_name = document.getElementById("username");
+			if (!userName) {
+				let api_main_url = localStorage.getItem("api_main_url");
+				let res_url = api_main_url + "api/user";
+				let headers = {
+					Authorization: `Bearer ${token}`,
+					"Content-Type": "application/json",
+				};
+				console.log("GET USER");
+				axios
+					.get(res_url, { headers })
+					.then((response) => {
+						let dataResponse = response.data.data;
+						let userName = dataResponse.user.name;
+
+						localStorage.setItem("username", userName);
+						el_name.innerHTML = userName;
+					})
+					.catch((error) => {
+						// Handle error
+						console.error("Get Data User Failed:", error);
+						alert("Get Data User Failed!");
+					});
+			} else {
+				el_name.innerHTML = userName;
+			}
 		}
 	}
 });
