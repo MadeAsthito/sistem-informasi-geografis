@@ -71,7 +71,7 @@
 			</header>
 			<!-- DYNAMIC CONTENT -->
 			<content class="px-3 py-5">
-				<div class="map rounded-2 mx-5" id="mainMap"></div>
+				<div class="map rounded-2 mx-5" id="editMap"></div>
 				<div class="input-data card">
 					<div class="card-body d-flex flex-column justify-content-between">
 						<div class="card-title d-flex justify-content-center">
@@ -148,12 +148,16 @@
 												<input type="text" class="form-control" id="namaRuas" />
 											</div>
 											<div class="data-input mb-3">
-												<label for="namaRuas">Lebar Ruas</label>
+												<label for="lebar">Lebar Ruas</label>
 												<input
 													type="number"
 													class="form-control"
-													id="namaRuas"
+													id="lebar"
 												/>
+											</div>
+											<div class="data-input mb-3">
+												<label for="keterangan">Keterangan</label>
+												<textarea class="form-control" id="keterangan" rows="3"></textarea>
 											</div>
 										</div>
 									</div>
@@ -172,7 +176,7 @@
 													class="form-select"
 													aria-label="Default select example"
 												>
-													<option selected>Pilih Provinsi...</option>
+													<option value="" selected>Pilih Provinsi...</option>
 												</select>
 											</div>
 											<div class="data-input mb-3">
@@ -182,7 +186,7 @@
 													class="form-select"
 													aria-label="Default select example"
 												>
-													<option selected>Pilih Kabupaten...</option>
+													<option value="" selected>Pilih Kabupaten...</option>
 												</select>
 											</div>
 											<div class="data-input mb-3">
@@ -192,7 +196,7 @@
 													class="form-select"
 													aria-label="Default select example"
 												>
-													<option selected>Pilih Kecamatan...</option>
+													<option value="" selected>Pilih Kecamatan...</option>
 												</select>
 											</div>
 											<div class="data-input mb-3">
@@ -202,7 +206,7 @@
 													class="form-select"
 													aria-label="Default select example"
 												>
-													<option selected>Pilih Desa...</option>
+													<option value="" selected>Pilih Desa...</option>
 												</select>
 											</div>
 										</div>
@@ -222,7 +226,7 @@
 													class="form-select"
 													aria-label="Default select example"
 												>
-													<option selected>Pilih Jenis Jalan...</option>
+													<option value="" selected>Pilih Jenis Jalan...</option>
 												</select>
 											</div>
 											<div class="data-input mb-3">
@@ -234,7 +238,7 @@
 													class="form-select"
 													aria-label="Default select example"
 												>
-													<option selected>
+													<option value="" selected>
 														Pilih Perkerasan Eksisting Jalan...
 													</option>
 												</select>
@@ -246,7 +250,7 @@
 													class="form-select"
 													aria-label="Default select example"
 												>
-													<option selected>Pilih Kondisi Jalan...</option>
+													<option value="" selected>Pilih Kondisi Jalan...</option>
 												</select>
 											</div>
 										</div>
@@ -258,7 +262,7 @@
 							<hr />
 							<div class="data-btn d-flex w-100 justify-content-center gap-2">
 								<a href="./index.html" class="btn btn-danger">Cancel</a>
-								<a href="#" class="btn btn-primary">Confirm</a>
+								<btn onclick="addData()" class="btn btn-primary">Confirm</btn>
 							</div>
 						</div>
 					</div>

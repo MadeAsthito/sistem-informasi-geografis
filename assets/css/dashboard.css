@@ -11,7 +11,7 @@
 }
 
 .nav-pills .nav-link.active,
-.nav-pills .show > .nav-link {
+.nav-pills .show>.nav-link {
 	background-color: var(--col-secondary);
 }
 
@@ -70,11 +70,11 @@
 	background-color: white;
 }
 
-.sidebar a > * {
+.sidebar a>* {
 	transition: all 0.2s ease-in;
 }
 
-.sidebar a:hover > * {
+.sidebar a:hover>* {
 	transform: translateX(1px);
 }
 
@@ -114,8 +114,6 @@ content {
 */
 
 .master-data {
-	position: absolute;
-	bottom: 2rem;
 	z-index: 10000000;
 	width: 90%;
 	max-width: 1000px;
@@ -129,6 +127,7 @@ content {
 		max-width: 750px;
 	}
 }
+
 /* 
 ========================
 

@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 						<p class="m-0">:</p>
 					</div>
 					<div class="col p-0">
-						<p class="m-0"> ${data_ruas.panjang.toFixed(2)}</p>
+						<p class="m-0"> ${data_ruas.panjang.toFixed(2)} m</p>
 					</div>
 				</div>
 				<div class="row">
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 						<p class="m-0">:</p>
 					</div>
 					<div class="col p-0">
-						<p class="m-0"> ${data_ruas.lebar}</p>
+						<p class="m-0"> ${data_ruas.lebar} m</p>
 					</div>
 				</div>
 				<div class="row">
