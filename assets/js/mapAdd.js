@@ -221,9 +221,11 @@ function addData() {
 	// CHECK IF THERE IS MARKER
 	let data_points = points
 	if (data_points.length <= 1) {
-		return alert(
-			"Missing Data! Please insert the polyline position by clicking it on the map"
-		)
+		return Swal.fire({
+			title: "Missing Data!",
+			text: "Please insert the polyline position by clicking it on the map.",
+			icon: "error"
+		});
 	}
 
 	// GET DATA
@@ -250,9 +252,11 @@ function addData() {
 
 	// CHECK DATA FORM
 	if (!kodeRuas || !namaRuas || !lebar || !provinsiId || !kabupatenId || !kecamatanId || !desaId || !jenisjalanId || !eksistingId || !kondisiId) {
-		return alert(
-			"Missing Data! Please insert all of the data on the form"
-		)
+		return Swal.fire({
+			title: "Missing Data!",
+			text: "Please insert all of the data on the form.",
+			icon: "error"
+		});
 	}
 
 	const token = localStorage.getItem("token");
@@ -280,15 +284,23 @@ function addData() {
 			// Handle successful call
 			console.log(response.data); // Assuming the API returns a token
 
-			// Redirect to another page (e.g., dashboard)
-			window.location.href = "/index.html"; // Replace with your dashboard page URL
+			Swal.fire({
+				title: "Success!",
+				text: "Data successully uploaded.",
+				icon: "success"
+			}).then((result) => {
+				// Redirect to another page (e.g., dashboard)
+				window.location.href = "/index.html"; // Replace with your dashboard page URL
+			});
 		})
 		.catch((error) => {
 			// Handle error
 			console.error("Data failed uploaded:", error);
-			alert(
-				"Data failed uploaded. Please check your data and credentials."
-			);
+			Swal.fire({
+				title: "Data failed uploaded!",
+				text: "Please check your data and credentials.",
+				icon: "error"
+			});
 		});
 
 }

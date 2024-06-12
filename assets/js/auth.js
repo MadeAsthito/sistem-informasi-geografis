@@ -30,7 +30,11 @@ document.addEventListener("DOMContentLoaded", function () {
 					.catch((error) => {
 						// Handle error
 						console.error("Get Data User Failed:", error);
-						alert("Get Data User Failed!");
+						Swal.fire({
+							title: "Error!",
+							text: "Get Data User Failed.",
+							icon: "error"
+						});
 					});
 			} else {
 				el_name.innerHTML = userName;
@@ -120,48 +124,66 @@ function register() {
 function logout() {
 	let token = localStorage.getItem("token");
 
-	let confirmed = confirm(
-		"Are you sure wanted to log out? Click OK if you wanted to proceed"
-	);
-	if (confirmed) {
-		let api_main_url = localStorage.getItem("api_main_url");
+	Swal.fire({
+		title: "Are you sure wanted to log out?",
+		text: "Click Yes if you wanted to proceed",
+		showCancelButton: true,
+		confirmButtonText: "Yes",
+		cancelButtonText: `No`
+	}).then((result) => {
+		if (result.isConfirmed) {
+			let api_main_url = localStorage.getItem("api_main_url");
 
-		let res_url = api_main_url + "api/logout";
+			let res_url = api_main_url + "api/logout";
 
-		let headers = {
-			Authorization: `Bearer ${token}`, // Include the token in the Authorization header
-			"Content-Type": "application/json", // Specify the content type as JSON
-		};
-		axios
-			.post(
-				res_url,
-				{},
-				{
-					headers,
-				}
-			)
-			.then((response) => {
-				// Populate the input field for input with id :
-				// name
-				// description
-				// email
-				// phoneNumber
-				alert("Logging Out successfull!");
-				localStorage.removeItem("token");
-				localStorage.removeItem("user");
-				localStorage.removeItem("username");
-				localStorage.removeItem("api_url");
+			let headers = {
+				Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+				"Content-Type": "application/json", // Specify the content type as JSON
+			};
+			axios
+				.post(
+					res_url,
+					{},
+					{
+						headers,
+					}
+				)
+				.then((response) => {
+					// Populate the input field for input with id :
+					// name
+					// description
+					// email
+					// phoneNumber
 
-				window.location.href = "/login.html";
-			})
-			.catch((error) => {
-				// Handle error
-				console.error("Logging Out Failed:", error);
-				alert("Logging Out Failed!");
-			});
+					Swal.fire({
+						title: "Success!",
+						text: "Logging Out successfull!",
+						icon: "success"
+					});
+					localStorage.removeItem("token");
+					localStorage.removeItem("user");
+					localStorage.removeItem("username");
+					localStorage.removeItem("api_url");
 
-		console.log("Logging Out");
-	}
+					window.location.href = "/login.html";
+				})
+				.catch((error) => {
+					// Handle error
+					console.error("Logging Out Failed:", error);
+
+					Swal.fire({
+						title: "Error!",
+						text: "Logging Out Failed!",
+						icon: "error"
+					});
+				});
+
+			console.log("Logging Out");
+		} else if (result.isDenied) {
+			Swal.fire("Changes are not saved", "", "info");
+		}
+	});
+
 }
 
 function goToDashboard() {

@@ -15,7 +15,7 @@ a {
 }
 
 .nav-pills .nav-link.active,
-.nav-pills .show > .nav-link {
+.nav-pills .show>.nav-link {
 	background-color: var(--col-secondary);
 }
 
@@ -73,11 +73,11 @@ a {
 	background-color: white;
 }
 
-.sidebar a > * {
+.sidebar a>* {
 	transition: all 0.2s ease-in;
 }
 
-.sidebar a:hover > * {
+.sidebar a:hover>* {
 	transform: translateX(1px);
 }
 
@@ -117,7 +117,7 @@ content {
 */
 
 .master-data {
-	z-index: 10000000;
+	z-index: 1000;
 	width: 90%;
 	max-width: 1000px;
 }
