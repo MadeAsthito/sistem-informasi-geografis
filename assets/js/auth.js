@@ -110,7 +110,13 @@ function register() {
 			let message = response.data.meta.message;
 
 			if (message == "Successfully create user") {
-				window.location.href = "/login.html";
+				Swal.fire({
+					title: "Success!",
+					text: message,
+					icon: "success"
+				}).then((result) => {
+					window.location.href = "/login.html";
+				});
 			} else {
 				el_warning.innerHTML = message;
 				el_name.classList.add("is-invalid");
