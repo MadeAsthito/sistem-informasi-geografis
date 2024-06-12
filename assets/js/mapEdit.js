@@ -249,9 +249,11 @@ function editData() {
 	// CHECK IF THERE IS MARKER
 	let data_points = points;
 	if (data_points.length <= 1) {
-		return alert(
-			"Missing Data! Please insert the polyline position by clicking it on the map"
-		);
+		return Swal.fire({
+			title: "Failed",
+			text: "Missing Data! Please insert the polyline position by clicking it on the ma",
+			icon: "error"
+		});
 	}
 
 	// GET DATA

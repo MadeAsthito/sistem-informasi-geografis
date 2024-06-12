@@ -86,14 +86,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 				</div>
 				<div class="row">
 					<div class="col px-0 py-2">
-						<a class="text-warning text-center" href="/edit_data.html?id=${
-							data_ruas.id
-						}">Edit Data</a>
+						<a class="text-warning text-center" href="/edit_data.html?id=${data_ruas.id
+			}">Edit Data</a>
 					</div>
 					<div class="col px-0 py-2">
-						<a class="text-danger text-center" onclick="deleteData(${
-							data_ruas.id
-						})">Delete Data</a>
+						<a class="text-danger text-center" onclick="deleteData(${data_ruas.id
+			})">Delete Data</a>
 					</div>
 				</div>
 			</div>
@@ -214,12 +212,20 @@ function deleteData(id) {
 				headers,
 			})
 			.then((response) => {
-				alert("Data successfully deleted");
+				Swal.fire({
+					title: "Success",
+					text: "Data successfully deleted",
+					icon: "success"
+				});
 				window.location.href = "/index.html";
 			})
 			.catch((error) => {
 				console.error("Data failed deleted:", error);
-				alert("Data failed deleted. Please check your data and credentials.");
+				Swal.fire({
+					title: "Failed",
+					text: "Data failed deleted. Please check your data and credentials.",
+					icon: "error"
+				});
 			});
 
 		console.log("deleting data for #" + id_restaurant);
