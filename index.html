@@ -17,6 +17,9 @@
 			integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
 			crossorigin="anonymous"
 		/>
+		
+		<!-- SweetAlert2 -->
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 		<!-- Leaflet Map -->
 		<link
@@ -30,19 +33,25 @@
 			integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
 			crossorigin=""
 		></script>
-		<link
+		<!-- <link
 			rel="stylesheet"
 			href="./assets/vendor/leaflet/leaflet-routing-machine.css"
-		/>
+		/> -->
 		<script src="https://unpkg.com/@mapbox/polyline"></script>
 
 		<link rel="stylesheet" href="./assets/css/dashboard.css" />
 
 		<!-- Axios JS -->
 		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-		
-		<!-- SweetAlert2 -->
-		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        
+		<!-- JQUERY 3.0 -->
+        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+		<!-- Data Table -->
+		<link href="https://cdn.datatables.net/v/bs5/dt-1.13.5/datatables.min.css" rel="stylesheet">
+		<script src="https://cdn.datatables.net/v/bs5/dt-1.13.5/datatables.min.js"></script>
+
+
 	</head>
 	<body class="d-flex">
 		<sidebar
@@ -65,13 +74,68 @@
 			<a onclick="logout()" class="py-2 px-3 nav-link rounded">Sign Out</a>
 		</sidebar>
 		<!-- MAIN CONTENT -->
-		<main class="flex-fill d-flex flex-column">
+		<main class="flex-fill d-flex flex-column" id="top">
 			<header class="bg-body-tertiary w-100 p-4 text-end">
 				<p class="m-0">Hello, <span id="username" class="h6"></span>!</p>
 			</header>
 			<!-- DYNAMIC CONTENT -->
-			<content class="dashboard-content px-3 py-5">
-				<div class="map rounded-2 mx-5 mb-3" id="mainMap"></div>
+			<content class="dashboard-content px-3 py-3">
+				<div class="form-floating mb-3">
+					<select class="form-select" id="legend_type" aria-label="Floating label select example" onchange="updateLegend()">
+						<option value="jenis" selected>Jenis Jalan</option>
+						<option value="eksisting">Perkerasan Jalan</option>
+						<option value="kondisi">Kondisi Jalan</option>
+					</select>
+					<label for="legend_type">Legend</label>
+				</div>
+
+				<div class="map rounded-2 mb-3" id="mainMap"></div>
+				
+				<div class="recap d-flex justify-content-start gap-5">
+					<div class="recap-data card mb-3">
+						<div class="card-body d-flex justify-content-start">
+							<div class="card-title pb-0">
+								<h3 class="fw-bold m-0">Jenis Jalan</h3>
+							</div>
+						</div>
+						<div class="card-body d-flex justify-content-between gap-3">
+							<div class="card-title text-primary">
+								<p class="fw-bold m-0">Provinsi</p>
+								<h3 class="m-0" id="tot_prov">0</h3>
+							</div>
+							<div class="card-title" style="color:purple">
+								<p class="fw-bold m-0">Kabupaten</p>
+								<h3 class="m-0" id="tot_kab">0</h3>
+							</div>
+							<div class="card-title text-success">
+								<p class="fw-bold m-0">Desa</p>
+								<h3 class="m-0" id="tot_des">0</h3>
+							</div>
+						</div>
+					</div>
+	
+					<div class="recap-data card mb-3">
+						<div class="card-body d-flex justify-content-start">
+							<div class="card-title pb-0">
+								<h3 class="fw-bold m-0">Kondisi Jalan</h3>
+							</div>
+						</div>
+						<div class="card-body d-flex justify-content-between gap-3">
+							<div class="card-title text-success">
+								<p class="fw-bold m-0">Baik</p>
+								<h3 class="m-0" id="tot_baik">0</h3>
+							</div>
+							<div class="card-title text-warning">
+								<p class="fw-bold m-0">Sedang</p>
+								<h3 class="m-0" id="tot_sedang">0</h3>
+							</div>
+							<div class="card-title text-danger">
+								<p class="fw-bold m-0">Rusak</p>
+								<h3 class="m-0" id="tot_rusak">0</h3>
+							</div>
+						</div>
+					</div>
+				</div>
 
 				<div class="master-data card">
 					<div class="card-body">
@@ -80,15 +144,19 @@
 							<a href="./add_data.html" class="btn btn-primary">Add Data</a>
 						</div>
 						<hr />
-						<table class="table table-hover">
+						<table class="table table-hover" id="dashboard" style="width:100%">
 							<thead>
 								<tr>
 									<th class="text-center" scope="col">#</th>
 									<th scope="col">Kode Ruas</th>
 									<th scope="col">Nama Ruas</th>
 									<th scope="col">Desa</th>
+									<th scope="col">Jenis Jalan</th>
+									<th scope="col">Jenis Perkerasan</th>
+									<th scope="col">Kondisi Jalan</th>
 									<th class="text-center" scope="col">Panjang</th>
 									<th class="text-center" scope="col">Lebar</th>
+									<th class="text-center" scope="col"></th>
 									<th class="text-center" scope="col"></th>
 									<th class="text-center" scope="col"></th>
 								</tr>

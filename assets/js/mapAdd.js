@@ -60,6 +60,33 @@ document.addEventListener("DOMContentLoaded", async function () {
 		});
 	const kondisiSelect = document.getElementById("kondisiId");
 	insertSelectOption(kondisiSelect, data_kondisi.eksisting);
+
+	function clickZoom(e) {
+		mainMap.setView(e.target.getLatLng(),15);
+	}
+
+	function addPolyline(data_ruas) {
+		const path = data_ruas.paths;
+		let decodedPath = polyline.decode(path);
+		let color = "grey";
+
+		L.polyline(decodedPath, {
+			color: color,
+		})
+			.addTo(mainMap)
+			.on("click", clickZoom);
+	}
+
+	
+	res_url = api_main_url + "api/ruasjalan";
+	const data_ruas = await axios.get(res_url, { headers }).then((response) => {
+		return response.data;
+	});
+
+	const ruas_jalan = data_ruas.ruasjalan;
+	ruas_jalan.forEach((ruas) => {
+		addPolyline(ruas);
+	});
 });
 
 // Menampilkan peta
@@ -86,7 +113,7 @@ function drawPolyline() {
 	}
 	// Create a new polyline and add it to the map
 	points = markers.map(marker => marker.getLatLng());
-	polyline = L.polyline(points, { color: 'red' }).addTo(mainMap);
+	polyline = L.polyline(points, { color: 'blue' }).addTo(mainMap);
 }
 
 // Event listener for map clicks

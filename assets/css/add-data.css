@@ -1,24 +1,36 @@
+content {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;	
+	align-items: center;
+}
+
+@media (min-width: 1799px) {
+	content {
+		flex-direction: row;
+		justify-content: start;
+		align-items: start;
+	}
+}
+
 .input-data {
 	z-index: 1000;
 	margin-top: -10rem;
 	width: 600px;
-	height: 590px;
 }
 
 .card-form {
-	width: 380px;
+	/* width: 380px; */
 }
 
 @media (min-width: 1799px) {
 	.input-data {
 		position: static;
-		max-width: 400px;
-		height: 100%;
 		margin-top: 0;
 	}
 
 	.card-form {
-		width: auto;
+		width: 100%;
 	}
 }
 
@@ -28,8 +40,11 @@
 }
 
 @media (min-width: 1799px) {
+	.map-group  {
+		max-width: 1300px
+	}
+
 	.map {
-		max-width: 1300px;
 		height: 80dvh;
 	}
 }
@@ -37,3 +52,5 @@
 option {
 	text-transform: capitalize;
 }
+
+

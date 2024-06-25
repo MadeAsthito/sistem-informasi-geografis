@@ -161,17 +161,19 @@ function logout() {
 					// email
 					// phoneNumber
 
-					Swal.fire({
-						title: "Success!",
-						text: "Logging Out successfull!",
-						icon: "success"
-					});
 					localStorage.removeItem("token");
 					localStorage.removeItem("user");
 					localStorage.removeItem("username");
 					localStorage.removeItem("api_url");
-
-					window.location.href = "/login.html";
+					
+					Swal.fire({
+						title: "Success!",
+						text: "Logging Out successfull!",
+						icon: "success",
+						timer: 2000
+					}).then((result) => {
+						window.location.href = "/login.html";
+					});
 				})
 				.catch((error) => {
 					// Handle error
