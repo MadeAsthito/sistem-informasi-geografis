@@ -12,19 +12,32 @@ document.addEventListener("DOMContentLoaded", async function () {
 	}).addTo(mainMap);
 
 	/*Legend specific*/
-	var legend = L.control({ position: "bottomleft" });
+	var legend = L.control({ position: "bottomright" });
 
-	legend.onAdd = function(mainMap) {
-	var div = L.DomUtil.create("div", "legend");
+	legend.onAdd = function (mainMap) {
+		var div = L.DomUtil.create("div", "legend");
 		div.innerHTML += "<h4>Jenis Jalan</h4>";
 		div.innerHTML += '<i style="background: blue"></i><span>Provinsi</span><br>';
 		div.innerHTML += '<i style="background: purple"></i><span>Kabupaten</span><br>';
 		div.innerHTML += '<i style="background: green"></i><span>Desa</span><br>';
-		
+
 		return div;
 	};
 
 	legend.addTo(mainMap);
+
+	/*Legend specific*/
+	var selectLegend = L.control({ position: "topright" });
+
+	selectLegend.onAdd = function (mainMap) {
+		var div = L.DomUtil.create("div", "selectLegend");
+
+		div.innerHTML += '<div class="form-floating mb-3"><select class="form-select" id="legend_type" aria-label="Floating label select example" onchange="updateLegend()"><option value="jenis" selected>Jenis Jalan</option><option value="eksisting">Perkerasan Jalan</option><option value="kondisi">Kondisi Jalan</option></select><label for="legend_type">Legend</label></div>';
+
+		return div;
+	};
+
+	selectLegend.addTo(mainMap);
 
 	const token = localStorage.getItem("token");
 	const api_main_url = localStorage.getItem("api_main_url");
@@ -157,7 +170,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 	};
 
 	function clickZoom(e) {
-		mainMap.setView(e.target.getLatLng(),15);
+		mainMap.setView(e.target.getLatLng(), 15);
 	}
 
 
@@ -167,8 +180,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 		let startPoint = decodedPath[0];
 		let endPoint = decodedPath[decodedPath.length - 1];
 		let color = "green";
-		if(data_ruas.jenisjalan_id == 1) color = "blue";
-		if(data_ruas.jenisjalan_id == 2) color = "purple";
+		if (data_ruas.jenisjalan_id == 1) color = "blue";
+		if (data_ruas.jenisjalan_id == 2) color = "purple";
 
 		L.polyline(decodedPath, {
 			color: color,
@@ -258,7 +271,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 			"justify-content-center"
 		);
 		selectButton.onclick = function () {
-			mainMap.setView([startPoint[0], startPoint[1]], 15); 
+			mainMap.setView([startPoint[0], startPoint[1]], 15);
 			window.scrollTo(0, 0);
 		};
 		selectCell.appendChild(selectButton);
@@ -307,7 +320,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 		addDataRuas("data-table", ruas, i);
 		i++;
 	});
-	
+
 	console.log(ruas_jalan)
 
 	let tot_des = ruas_jalan.filter((k) => k.jenisjalan_id == 1).length;
@@ -337,7 +350,7 @@ function deleteData(id) {
 		showCancelButton: true,
 		confirmButtonText: "Yes",
 		cancelButtonText: `No`
-	}).then((result) => { 
+	}).then((result) => {
 		if (result.isConfirmed) {
 			const api_main_url = localStorage.getItem("api_main_url");
 			const res_url = api_main_url + "api/ruasjalan/" + id;
@@ -366,11 +379,11 @@ function deleteData(id) {
 						icon: "error"
 					});
 				});
-	
+
 			console.log("deleting data for #" + id_restaurant);
 		}
 	});
-	
+
 }
 
 // Function to get legend content based on type
@@ -406,7 +419,7 @@ function getLegendContent(type) {
 }
 
 function clickZoom(e) {
-	mainMap.setView(e.target.getLatLng(),15);
+	mainMap.setView(e.target.getLatLng(), 15);
 }
 
 // Function to update legend content
@@ -416,24 +429,24 @@ function updateLegendPolyline(data_ruas, legend_type) {
 	let startPoint = decodedPath[0];
 	let endPoint = decodedPath[decodedPath.length - 1];
 	let color = "blue";
-	if(legend_type == 'jenis'){
-		if(data_ruas.jenisjalan_id == 1) color = "blue";
-		if(data_ruas.jenisjalan_id == 2) color = "purple";
-		if(data_ruas.jenisjalan_id == 3) color = "green";
-	}else if(legend_type == 'kondisi'){
-		if(data_ruas.kondisi_id == 1) color = "green";
-		if(data_ruas.kondisi_id == 2) color = "orange";
-		if(data_ruas.kondisi_id == 3) color = "red";
-	}else if(legend_type == 'eksisting'){
-		if(data_ruas.eksisting_id == 1) color = "brown";
-		if(data_ruas.eksisting_id == 2) color = "maroon";
-		if(data_ruas.eksisting_id == 3) color = "gray";
-		if(data_ruas.eksisting_id == 4) color = "lightgray";
-		if(data_ruas.eksisting_id == 5) color = "darkgray";
-		if(data_ruas.eksisting_id == 6) color = "beige";
-		if(data_ruas.eksisting_id == 7) color = "black";
-		if(data_ruas.eksisting_id == 8) color = "orange";
-		if(data_ruas.eksisting_id == 9) color = "orangered";
+	if (legend_type == 'jenis') {
+		if (data_ruas.jenisjalan_id == 1) color = "blue";
+		if (data_ruas.jenisjalan_id == 2) color = "purple";
+		if (data_ruas.jenisjalan_id == 3) color = "green";
+	} else if (legend_type == 'kondisi') {
+		if (data_ruas.kondisi_id == 1) color = "green";
+		if (data_ruas.kondisi_id == 2) color = "orange";
+		if (data_ruas.kondisi_id == 3) color = "red";
+	} else if (legend_type == 'eksisting') {
+		if (data_ruas.eksisting_id == 1) color = "brown";
+		if (data_ruas.eksisting_id == 2) color = "maroon";
+		if (data_ruas.eksisting_id == 3) color = "gray";
+		if (data_ruas.eksisting_id == 4) color = "lightgray";
+		if (data_ruas.eksisting_id == 5) color = "darkgray";
+		if (data_ruas.eksisting_id == 6) color = "beige";
+		if (data_ruas.eksisting_id == 7) color = "black";
+		if (data_ruas.eksisting_id == 8) color = "orange";
+		if (data_ruas.eksisting_id == 9) color = "orangered";
 	}
 
 	L.polyline(decodedPath, {
