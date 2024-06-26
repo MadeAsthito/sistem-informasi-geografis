@@ -152,7 +152,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 						<p class="m-0">:</p>
 					</div>
 					<div class="col p-0">
-						<p class="m-0"> ${data_ruas.lebar.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} m</p>
+						<p class="m-0"> ${data_ruas.lebar.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} m</p>
 					</div>
 				</div>
 				<div class="row">
@@ -256,7 +256,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 		panjangCell.style.textAlign = "center";
 
 		let lebarCell = row.insertCell();
-		lebarCell.textContent = data_ruas.lebar.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " m";
+		lebarCell.textContent = data_ruas.lebar.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " m";
 		lebarCell.style.textAlign = "center";
 
 		// Update :
