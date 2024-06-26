@@ -1,6 +1,8 @@
+var mainMap;
+
 document.addEventListener("DOMContentLoaded", async function () {
 	// Menampilkan peta
-	const mainMap = L.map("mainMap").setView([-8.65, 115.216667], 12);
+	mainMap = L.map("mainMap").setView([-8.65, 115.216667], 12);
 
 	// Menambahkan layer peta
 	L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -8,6 +10,21 @@ document.addEventListener("DOMContentLoaded", async function () {
 			'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
 		maxZoom: 18,
 	}).addTo(mainMap);
+
+	/*Legend specific*/
+	var legend = L.control({ position: "bottomleft" });
+
+	legend.onAdd = function(mainMap) {
+	var div = L.DomUtil.create("div", "legend");
+		div.innerHTML += "<h4>Jenis Jalan</h4>";
+		div.innerHTML += '<i style="background: blue"></i><span>Provinsi</span><br>';
+		div.innerHTML += '<i style="background: purple"></i><span>Kabupaten</span><br>';
+		div.innerHTML += '<i style="background: green"></i><span>Desa</span><br>';
+		
+		return div;
+	};
+
+	legend.addTo(mainMap);
 
 	const token = localStorage.getItem("token");
 	const api_main_url = localStorage.getItem("api_main_url");
@@ -20,8 +37,38 @@ document.addEventListener("DOMContentLoaded", async function () {
 		return response.data;
 	});
 
+	res_url = api_main_url + "api/mjenisjalan";
+	const data_jenis_jalan = await axios.get(res_url, { headers }).then((response) => {
+		return response.data;
+	});
+
+	res_url = api_main_url + "api/meksisting";
+	const data_eksisting = await axios.get(res_url, { headers }).then((response) => {
+		return response.data;
+	});
+
+	res_url = api_main_url + "api/mkondisi";
+	const data_kondisi = await axios.get(res_url, { headers }).then((response) => {
+		return response.data;
+	});
+
 	formatContentRuas = function (status, data_ruas, lat, lng) {
 		let data_desa = data_region.desa.find((k) => k.id == data_ruas.desa_id);
+		let _data_jenis_jalan = data_jenis_jalan.eksisting.find(
+			(k) => k.id == data_ruas.jenisjalan_id
+		);
+		_data_jenis_jalan = _data_jenis_jalan.jenisjalan;
+
+		let _data_eksisting = data_eksisting.eksisting.find(
+			(k) => k.id == data_ruas.eksisting_id
+		);
+		_data_eksisting = _data_eksisting.eksisting;
+
+		let _data_kondisi = data_kondisi.eksisting.find(
+			(k) => k.id == data_ruas.kondisi_id
+		);
+		_data_kondisi = _data_kondisi.kondisi;
+
 		return `
 			<h6 class="m-0 text-center">
 				<b>${data_ruas.kode_ruas} | ${data_ruas.nama_ruas}</b>
@@ -42,13 +89,46 @@ document.addEventListener("DOMContentLoaded", async function () {
 				</div>
 				<div class="row">
 					<div class="col p-0">
+						<p class="m-0">Jenis</p>
+					</div>
+					<div class="col col-1 p-0">
+						<p class="m-0">:</p>
+					</div>
+					<div class="col p-0">
+						<p class="m-0">${_data_jenis_jalan}</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col p-0">
+						<p class="m-0">Perkerasan</p>
+					</div>
+					<div class="col col-1 p-0">
+						<p class="m-0">:</p>
+					</div>
+					<div class="col p-0">
+						<p class="m-0">${_data_eksisting}</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col p-0">
+						<p class="m-0">Kondisi</p>
+					</div>
+					<div class="col col-1 p-0">
+						<p class="m-0">:</p>
+					</div>
+					<div class="col p-0">
+						<p class="m-0">${_data_kondisi}</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col p-0">
 						<p class="m-0">Panjang</p>
 					</div>
 					<div class="col col-1 p-0">
 						<p class="m-0">:</p>
 					</div>
 					<div class="col p-0">
-						<p class="m-0"> ${data_ruas.panjang.toFixed(2)} m</p>
+						<p class="m-0"> ${data_ruas.panjang.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} m</p>
 					</div>
 				</div>
 				<div class="row">
@@ -59,29 +139,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 						<p class="m-0">:</p>
 					</div>
 					<div class="col p-0">
-						<p class="m-0"> ${data_ruas.lebar} m</p>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col p-0">
-						<p class="m-0">Lat</p>
-					</div>
-					<div class="col col-1 p-0">
-						<p class="m-0">:</p>
-					</div>
-					<div class="col p-0">
-						<p class="m-0"> ${lat}</p>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col p-0">
-						<p class="m-0">Lng</p>
-					</div>
-					<div class="col col-1 p-0">
-						<p class="m-0">:</p>
-					</div>
-					<div class="col p-0">
-						<p class="m-0"> ${lng}</p>
+						<p class="m-0"> ${data_ruas.lebar.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} m</p>
 					</div>
 				</div>
 				<div class="row">
@@ -98,27 +156,46 @@ document.addEventListener("DOMContentLoaded", async function () {
 		`;
 	};
 
+	function clickZoom(e) {
+		mainMap.setView(e.target.getLatLng(),15);
+	}
+
+
 	function addPolyline(data_ruas) {
 		const path = data_ruas.paths;
 		let decodedPath = polyline.decode(path);
 		let startPoint = decodedPath[0];
 		let endPoint = decodedPath[decodedPath.length - 1];
+		let color = "green";
+		if(data_ruas.jenisjalan_id == 1) color = "blue";
+		if(data_ruas.jenisjalan_id == 2) color = "purple";
 
 		L.polyline(decodedPath, {
-			color: "blue",
-		}).addTo(mainMap);
+			color: color,
+		})
+			.addTo(mainMap)
+			.bindPopup(
+				formatContentRuas("Jalan", data_ruas, startPoint[0], startPoint[1])
+			)
+			.on("click", clickZoom);
 		L.marker([startPoint[0], startPoint[1]])
 			.addTo(mainMap)
 			.bindPopup(
 				formatContentRuas("Start", data_ruas, startPoint[0], startPoint[1])
-			);
+			)
+			.on("click", clickZoom);
 		L.marker([endPoint[0], endPoint[1]])
 			.addTo(mainMap)
-			.bindPopup(formatContentRuas("End", data_ruas, endPoint[0], endPoint[1]));
+			.bindPopup(formatContentRuas("End", data_ruas, endPoint[0], endPoint[1]))
+			.on("click", clickZoom);
 	}
 
 	function addDataRuas(idTable, data_ruas, iterasi) {
 		const tableBody = document.getElementById(idTable);
+
+		const path = data_ruas.paths;
+		let decodedPath = polyline.decode(path);
+		let startPoint = decodedPath[0];
 
 		let row = tableBody.insertRow();
 
@@ -140,15 +217,52 @@ document.addEventListener("DOMContentLoaded", async function () {
 		desaCell.textContent = data_desa.desa;
 		desaCell.style.textAlign = "left";
 
+		let _data_jenis_jalan = data_jenis_jalan.eksisting.find(
+			(k) => k.id == data_ruas.jenisjalan_id
+		);
+		let jenisJalanCell = row.insertCell();
+		jenisJalanCell.textContent = _data_jenis_jalan.jenisjalan;
+		jenisJalanCell.style.textAlign = "left";
+
+		let _data_eksisting = data_eksisting.eksisting.find(
+			(k) => k.id == data_ruas.eksisting_id
+		);
+		let eksistingCell = row.insertCell();
+		eksistingCell.textContent = _data_eksisting.eksisting;
+		eksistingCell.style.textAlign = "left";
+
+		let _data_kondisi = data_kondisi.eksisting.find(
+			(k) => k.id == data_ruas.kondisi_id
+		);
+		let kondisiCell = row.insertCell();
+		kondisiCell.textContent = _data_kondisi.kondisi;
+		kondisiCell.style.textAlign = "left";
+
 		let panjangCell = row.insertCell();
-		panjangCell.textContent = data_ruas.panjang.toFixed(2) + " m";
+		panjangCell.textContent = data_ruas.panjang.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " m";
 		panjangCell.style.textAlign = "center";
 
 		let lebarCell = row.insertCell();
-		lebarCell.textContent = data_ruas.lebar + " m";
+		lebarCell.textContent = data_ruas.lebar.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " m";
 		lebarCell.style.textAlign = "center";
 
 		// Update :
+		let selectCell = row.insertCell();
+		let selectButton = document.createElement("button");
+		selectButton.innerHTML = '<span class="material-icons-sharp">search</span>';
+		selectButton.classList.add(
+			"btn",
+			"btn-primary",
+			"d-flex",
+			"flex-column",
+			"justify-content-center"
+		);
+		selectButton.onclick = function () {
+			mainMap.setView([startPoint[0], startPoint[1]], 15); 
+			window.scrollTo(0, 0);
+		};
+		selectCell.appendChild(selectButton);
+
 		let editCell = row.insertCell();
 		let editButton = document.createElement("button");
 		editButton.innerHTML = '<span class="material-icons-sharp">edit</span>';
@@ -187,47 +301,179 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 	const ruas_jalan = data_ruas.ruasjalan;
 	let i = 1;
+
 	ruas_jalan.forEach((ruas) => {
 		addPolyline(ruas);
 		addDataRuas("data-table", ruas, i);
 		i++;
 	});
+	
+	console.log(ruas_jalan)
+
+	let tot_des = ruas_jalan.filter((k) => k.jenisjalan_id == 1).length;
+	let tot_kab = ruas_jalan.filter((k) => k.jenisjalan_id == 2).length;
+	let tot_prov = ruas_jalan.filter((k) => k.jenisjalan_id == 3).length;
+	document.getElementById('tot_des').innerHTML = tot_des;
+	document.getElementById('tot_kab').innerHTML = tot_kab;
+	document.getElementById('tot_prov').innerHTML = tot_prov;
+
+	let tot_baik = ruas_jalan.filter((k) => k.kondisi_id == 1).length;
+	let tot_sedang = ruas_jalan.filter((k) => k.kondisi_id == 2).length;
+	let tot_rusak = ruas_jalan.filter((k) => k.kondisi_id == 3).length;
+	document.getElementById('tot_baik').innerHTML = tot_baik;
+	document.getElementById('tot_sedang').innerHTML = tot_sedang;
+	document.getElementById('tot_rusak').innerHTML = tot_rusak;
+
+	new DataTable('#dashboard');
 });
+
 
 function deleteData(id) {
 	var token = localStorage.getItem("token");
 
-	var confirmed = confirm(
-		"Are you sure wanted to delete this data? Click OK if you wanted to proceed"
-	);
-	if (confirmed) {
-		const api_main_url = localStorage.getItem("api_main_url");
-		const res_url = api_main_url + "api/ruasjalan/" + id;
-		const headers = {
-			Authorization: `Bearer ${token}`,
-			"Content-type": "application/json",
-		};
-		axios
-			.delete(res_url, {
-				headers,
-			})
-			.then((response) => {
-				Swal.fire({
-					title: "Success",
-					text: "Data successfully deleted",
-					icon: "success"
+	Swal.fire({
+		title: "Are you sure wanted to delete this data?",
+		text: "Click Yes if you wanted to proceed",
+		showCancelButton: true,
+		confirmButtonText: "Yes",
+		cancelButtonText: `No`
+	}).then((result) => { 
+		if (result.isConfirmed) {
+			const api_main_url = localStorage.getItem("api_main_url");
+			const res_url = api_main_url + "api/ruasjalan/" + id;
+			const headers = {
+				Authorization: `Bearer ${token}`,
+				"Content-type": "application/json",
+			};
+			axios
+				.delete(res_url, {
+					headers,
+				})
+				.then((response) => {
+					Swal.fire({
+						title: "Success",
+						text: "Data successfully deleted",
+						icon: "success"
+					}).then((result) => {
+						window.location.href = "/index.html";
+					});
+				})
+				.catch((error) => {
+					console.error("Data failed deleted:", error);
+					Swal.fire({
+						title: "Failed",
+						text: "Data failed deleted. Please check your data and credentials.",
+						icon: "error"
+					});
 				});
-				window.location.href = "/index.html";
-			})
-			.catch((error) => {
-				console.error("Data failed deleted:", error);
-				Swal.fire({
-					title: "Failed",
-					text: "Data failed deleted. Please check your data and credentials.",
-					icon: "error"
-				});
-			});
+	
+			console.log("deleting data for #" + id_restaurant);
+		}
+	});
+	
+}
 
-		console.log("deleting data for #" + id_restaurant);
+// Function to get legend content based on type
+function getLegendContent(type) {
+	if (type === 'jenis') {
+		return `
+			<h4>Jenis Jalan</h4>
+			<i style="background: blue"></i><span>Provinsi</span><br>
+			<i style="background: purple"></i><span>Kabupaten</span><br>
+			<i style="background: green"></i><span>Desa</span><br>
+		`;
+	} else if (type === 'kondisi') {
+		return `
+			<h4>Kondisi Jalan</h4>
+			<i style="background: green"></i><span>Baik</span><br>
+			<i style="background: orange"></i><span>Sedang</span><br>
+			<i style="background: red"></i><span>Rusak</span><br>
+		`;
+	} else if (type === 'eksisting') {
+		return `
+			<h4>Perkerasan Jalan</h4>
+			<i style="background: brown"></i><span>Tanah</span><br>
+			<i style="background: maroon"></i><span>Tanah/Beton</span><br>
+			<i style="background: gray"></i><span>Perkerasan</span><br>
+			<i style="background: lightgray"></i><span>Koral</span><br>
+			<i style="background: darkgray"></i><span>Lapen</span><br>
+			<i style="background: beige"></i><span>Paving</span><br>
+			<i style="background: black"></i><span>Hotmix</span><br>
+			<i style="background: orange"></i><span>Beton</span><br>
+			<i style="background: orangered"></i><span>Beton/Lapen</span><br>
+		`;
 	}
+}
+
+function clickZoom(e) {
+	mainMap.setView(e.target.getLatLng(),15);
+}
+
+// Function to update legend content
+function updateLegendPolyline(data_ruas, legend_type) {
+	const path = data_ruas.paths;
+	let decodedPath = polyline.decode(path);
+	let startPoint = decodedPath[0];
+	let endPoint = decodedPath[decodedPath.length - 1];
+	let color = "blue";
+	if(legend_type == 'jenis'){
+		if(data_ruas.jenisjalan_id == 1) color = "blue";
+		if(data_ruas.jenisjalan_id == 2) color = "purple";
+		if(data_ruas.jenisjalan_id == 3) color = "green";
+	}else if(legend_type == 'kondisi'){
+		if(data_ruas.kondisi_id == 1) color = "green";
+		if(data_ruas.kondisi_id == 2) color = "orange";
+		if(data_ruas.kondisi_id == 3) color = "red";
+	}else if(legend_type == 'eksisting'){
+		if(data_ruas.eksisting_id == 1) color = "brown";
+		if(data_ruas.eksisting_id == 2) color = "maroon";
+		if(data_ruas.eksisting_id == 3) color = "gray";
+		if(data_ruas.eksisting_id == 4) color = "lightgray";
+		if(data_ruas.eksisting_id == 5) color = "darkgray";
+		if(data_ruas.eksisting_id == 6) color = "beige";
+		if(data_ruas.eksisting_id == 7) color = "black";
+		if(data_ruas.eksisting_id == 8) color = "orange";
+		if(data_ruas.eksisting_id == 9) color = "orangered";
+	}
+
+	L.polyline(decodedPath, {
+		color: color,
+	})
+		.addTo(mainMap)
+		.bindPopup(
+			formatContentRuas("Jalan", data_ruas, startPoint[0], startPoint[1])
+		)
+		.on("click", clickZoom);
+	L.marker([startPoint[0], startPoint[1]])
+		.addTo(mainMap)
+		.bindPopup(
+			formatContentRuas("Start", data_ruas, startPoint[0], startPoint[1])
+		)
+		.on("click", clickZoom);
+	L.marker([endPoint[0], endPoint[1]])
+		.addTo(mainMap)
+		.bindPopup(formatContentRuas("End", data_ruas, endPoint[0], endPoint[1]))
+		.on("click", clickZoom);
+}
+
+async function updateLegend() {
+
+	const token = localStorage.getItem("token");
+	const api_main_url = localStorage.getItem("api_main_url");
+	const headers = {
+		Authorization: `Bearer ${token}`,
+		"Content-type": "application/json",
+	};
+	let res_url = api_main_url + "api/ruasjalan";
+	const data_ruas = await axios.get(res_url, { headers }).then((response) => {
+		return response.data;
+	});
+
+	var selectedValue = document.getElementById('legend_type').value;
+	var legendContent = getLegendContent(selectedValue);
+	document.querySelector('.legend').innerHTML = legendContent;
+
+	data_ruas.ruasjalan.forEach((ruas) => {
+		updateLegendPolyline(ruas, selectedValue);
+	});
 }

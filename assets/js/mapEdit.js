@@ -118,6 +118,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 		console.log(polyline_paths);
 
 		polyline_paths.forEach(([lat, lng]) => {
+			mainMap.setView([lat, lng], 15);
 			const marker = L.marker([lat, lng], { draggable: true }).addTo(mainMap);
 
 			marker.on("dragend", function () {
@@ -139,6 +140,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 	}
 
 	// PROSES POPULASI
+	
+	let polylineFunc = polyline;
 	const window_url = window.location.href;
 	const query_params = window_url.split("?")[1];
 	const edit_id = query_params.split("=")[1];
@@ -151,6 +154,36 @@ document.addEventListener("DOMContentLoaded", async function () {
 		console.log(markers);
 		console.log(points);
 	});
+
+	
+
+	function clickZoom(e) {
+		mainMap.setView(e.target.getLatLng(),15);
+	}
+
+	function addPolyline(data_ruas) {
+		const path = data_ruas.paths;
+		let decodedPath = polylineFunc.decode(path);
+		let color = "grey";
+
+		L.polyline(decodedPath, {
+			color: color,
+		})
+			.addTo(mainMap)
+			.on("click", clickZoom);
+	}
+
+	
+	res_url = api_main_url + "api/ruasjalan";
+	const data_ruas = await axios.get(res_url, { headers }).then((response) => {
+		return response.data;
+	});
+
+	const ruas_jalan = data_ruas.ruasjalan;
+	ruas_jalan.forEach((ruas) => {
+		if(ruas.id != edit_id) addPolyline(ruas);
+	});
+
 });
 
 // Menampilkan peta
@@ -176,7 +209,7 @@ function drawPolyline() {
 	}
 	// Create a new polyline and add it to the map
 	points = markers.map((marker) => marker.getLatLng());
-	polyline = L.polyline(points, { color: "red" }).addTo(mainMap);
+	polyline = L.polyline(points, { color: "blue" }).addTo(mainMap);
 }
 
 // Event listener for map clicks
