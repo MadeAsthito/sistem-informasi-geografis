@@ -471,6 +471,16 @@ function updateLegendPolyline(data_ruas, legend_type) {
 		if (data_ruas.eksisting_id == 9) color = "orangered";
 	}
 
+	
+
+	// Custom icon
+	var customIcon = L.divIcon({
+		className: 'custom-marker-icon',
+		html: `<span class="material-icons-sharp" style="font-size: 38px; line-height: 38px;text-align: center;color: ${color};">location_on</span>`,
+		iconSize: [38, 38],
+		iconAnchor: [19, 37] // Adjust anchor point to the middle of the bottom
+	});
+
 	L.polyline(decodedPath, {
 		color: color,
 	})
@@ -479,13 +489,13 @@ function updateLegendPolyline(data_ruas, legend_type) {
 			formatContentRuas("Jalan", data_ruas, startPoint[0], startPoint[1])
 		)
 		.on("click", clickZoom);
-	L.marker([startPoint[0], startPoint[1]])
+	L.marker([startPoint[0], startPoint[1]], {icon: customIcon })
 		.addTo(mainMap)
 		.bindPopup(
 			formatContentRuas("Start", data_ruas, startPoint[0], startPoint[1])
 		)
 		.on("click", clickZoom);
-	L.marker([endPoint[0], endPoint[1]])
+	L.marker([endPoint[0], endPoint[1]], {icon: customIcon })
 		.addTo(mainMap)
 		.bindPopup(formatContentRuas("End", data_ruas, endPoint[0], endPoint[1]))
 		.on("click", clickZoom);
