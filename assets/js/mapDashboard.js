@@ -155,7 +155,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 						<p class="m-0">:</p>
 					</div>
 					<div class="col p-0">
-						<p class="m-0"> ${data_ruas.panjang.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} m</p>
+						<p class="m-0"> ${(data_ruas.panjang / 1000).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} km</p>
 					</div>
 				</div>
 				<div class="row">
@@ -266,7 +266,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 		kondisiCell.style.textAlign = "left";
 
 		let panjangCell = row.insertCell();
-		panjangCell.textContent = data_ruas.panjang.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " m";
+		panjangCell.textContent = (data_ruas.panjang / 1000).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " km";
 		panjangCell.style.textAlign = "center";
 
 		let lebarCell = row.insertCell();
