@@ -33,8 +33,8 @@ document.addEventListener("DOMContentLoaded", function () {
 					console.error("Get Data User Failed:", errorResponse);
 					if(errorResponse.code == '403') window.location.href = "/login.html";
 					Swal.fire({
-						title: "Error!",
-						text: "Get Data User Failed.",
+						title: "Gagal!",
+						text: "Gagal mengambil data user.",
 						icon: "error",
 					});
 				});
@@ -110,7 +110,7 @@ function register() {
 
 			if (message == "Successfully create user") {
 				Swal.fire({
-					title: "Success!",
+					title: "Sukses!",
 					text: message,
 					icon: "success",
 				}).then((result) => {
@@ -130,11 +130,11 @@ function logout() {
 	let token = localStorage.getItem("token");
 
 	Swal.fire({
-		title: "Are you sure wanted to log out?",
-		text: "Click Yes if you wanted to proceed",
+		title: "Apakah anda yakin ingin log out?",
+		text: "Klik Iya jika anda yakin",
 		showCancelButton: true,
-		confirmButtonText: "Yes",
-		cancelButtonText: `No`,
+		confirmButtonText: "Iya",
+		cancelButtonText: `Tidak`,
 	}).then((result) => {
 		if (result.isConfirmed) {
 			let api_main_url = localStorage.getItem("api_main_url");
@@ -166,8 +166,8 @@ function logout() {
 					localStorage.removeItem("api_url");
 
 					Swal.fire({
-						title: "Success!",
-						text: "Logging Out successfull!",
+						title: "Sukses!",
+						text: "Berhasil Log Out!",
 						icon: "success",
 						timer: 2000,
 					}).then((result) => {
@@ -179,15 +179,13 @@ function logout() {
 					console.error("Logging Out Failed:", error);
 
 					Swal.fire({
-						title: "Error!",
-						text: "Logging Out Failed!",
+						title: "Gagal!",
+						text: "Gagal Log Out!",
 						icon: "error",
 					});
 				});
 
 			console.log("Logging Out");
-		} else if (result.isDenied) {
-			Swal.fire("Changes are not saved", "", "info");
 		}
 	});
 }

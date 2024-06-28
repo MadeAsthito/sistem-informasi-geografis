@@ -112,31 +112,38 @@ document.addEventListener("DOMContentLoaded", async function () {
 		document.getElementById("kondisiId").value = data_ruas_jalan.kondisi_id;
 	}
 
+	// FUNGSI MENCARI POINT TENGAH 
+	function findMidpoint(latlngs) {
+		if (latlngs.length === 0) return null;
+	
+		var sumLat = 0;
+		var sumLng = 0;
+
+		latlngs.forEach((e) => {
+			sumLat += e.lat;
+			sumLng += e.lng;
+		})
+
+		var midpointLat = sumLat / latlngs.length;
+		var midpointLng = sumLng / latlngs.length;
+	
+		return [midpointLat, midpointLng];
+	}
+
 	// FUNGSI POPULASI MAP
 	function populateEditMap(data_paths) {
 		polyline_paths = polyline.decode(data_paths);
 		console.log(polyline_paths);
 
-		polyline_paths.forEach(([lat, lng]) => {
-			mainMap.setView([lat, lng], 15);
-			const marker = L.marker([lat, lng], { draggable: true }).addTo(mainMap);
+		// Create a new polyline with the existing coordinates
+		var existingPolyline = L.polyline(polyline_paths, {
+			color: 'blue' // Match the color to your desired polyline color
+		}).addTo(drawnItems);
 
-			marker.on("dragend", function () {
-				drawPolyline();
-			});
+		plylineLayer = existingPolyline;
+		points = existingPolyline._latlngs;
 
-			// Add click event to remove marker on Ctrl+Click
-			marker.on("click", function (event) {
-				if (event.originalEvent.ctrlKey) {
-					mainMap.removeLayer(marker);
-					markers = markers.filter((m) => m !== marker);
-					drawPolyline();
-				}
-			});
-
-			markers.push(marker);
-			drawPolyline();
-		});
+		mainMap.setView(findMidpoint(points), 15);
 	}
 
 	// PROSES POPULASI
@@ -155,39 +162,19 @@ document.addEventListener("DOMContentLoaded", async function () {
 		console.log(points);
 	});
 
-	
 
-	function clickZoom(e) {
-		mainMap.setView(e.target.getLatLng(),15);
-	}
-
-	function addPolyline(data_ruas) {
-		const path = data_ruas.paths;
-		let decodedPath = polylineFunc.decode(path);
-		let color = "grey";
-
-		L.polyline(decodedPath, {
-			color: color,
-		})
-			.addTo(mainMap)
-			.on("click", clickZoom);
-	}
-
-	
-	res_url = api_main_url + "api/ruasjalan";
-	const data_ruas = await axios.get(res_url, { headers }).then((response) => {
-		return response.data;
-	});
-
-	const ruas_jalan = data_ruas.ruasjalan;
-	ruas_jalan.forEach((ruas) => {
-		if(ruas.id != edit_id) addPolyline(ruas);
-	});
 
 });
 
 // Menampilkan peta
-let mainMap = L.map("editMap").setView([-8.65, 115.216667], 12);
+// Menampilkan peta
+var mainMap = L.map("editMap").setView([-8.65, 115.216667], 12);
+
+// Initialize an array to store the points
+var points = [];
+var plylineLayer = [];
+var markers = [];
+var polylineFunc = polyline;
 
 // Menambahkan layer peta
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -196,47 +183,40 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 	maxZoom: 18,
 }).addTo(mainMap);
 
-// Initialize an array to store the points
-var points = [];
-var markers = [];
-var polylineFunc = polyline;
+var drawnItems = new L.FeatureGroup();
+mainMap.addLayer(drawnItems);
 
-// Function to draw the polyline
-function drawPolyline() {
-	// Remove the existing polyline, if any
-	if (mainMap.hasLayer(polyline)) {
-		mainMap.removeLayer(polyline);
+var drawControl = new L.Control.Draw({
+	position: "topright",
+	draw: {
+		polyline:  {
+			shapeOptions: {
+				color: 'blue' // Change this color to your desired color
+			}
+		},
+		polygon: false,
+		rectangle: false,
+		circle: false,
+		marker: false,
+	},
+	edit: {
+		featureGroup: drawnItems
 	}
-	// Create a new polyline and add it to the map
-	points = markers.map((marker) => marker.getLatLng());
-	polyline = L.polyline(points, { color: "blue" }).addTo(mainMap);
-}
-
-// Event listener for map clicks
-mainMap.on("click", function (e) {
-	// Get the clicked location's coordinates
-	const { lat, lng } = e.latlng;
-	const marker = L.marker([lat, lng], { draggable: true }).addTo(mainMap);
-
-	marker.on("dragend", function () {
-		drawPolyline();
-	});
-
-	// Add click event to remove marker on Ctrl+Click
-	marker.on("click", function (event) {
-		if (event.originalEvent.ctrlKey) {
-			mainMap.removeLayer(marker);
-			markers = markers.filter((m) => m !== marker);
-			drawPolyline();
-		}
-	});
-
-	markers.push(marker);
-	drawPolyline();
 });
+mainMap.addControl(drawControl);
 
-// Initialize a polyline layer
-L.polyline(points, { color: "red" }).addTo(mainMap);
+mainMap.on("draw:created", function (e) {
+	if(points.length > 0) drawnItems.removeLayer(plylineLayer);
+
+	var layer = e.layer;
+	
+	plylineLayer = layer;
+	points = layer._latlngs;
+	
+	console.log(layer._latlngs);
+	
+	drawnItems.addLayer(layer);
+});
 
 // Initialize a polyline layer
 // let polyline = L.polyline(points, { color: 'red' }).addTo(mainMap);
@@ -283,8 +263,8 @@ function editData() {
 	let data_points = points;
 	if (data_points.length <= 1) {
 		return Swal.fire({
-			title: "Missing Data!",
-			text: "Please insert the polyline position by clicking it on the map.",
+			title: "Data tidak lengkap!",
+			text: "Mohon masukkan polyline dengan mengklik icon polyline di peta pojok kanan atas.",
 			icon: "error"
 		});
 	}
@@ -327,8 +307,8 @@ function editData() {
 		!kondisiId
 	) {
 		return Swal.fire({
-			title: "Missing Data!",
-			text: "Please insert all of the data on the form.",
+			title: "Data tidak lengkap!",
+			text: "Mohon masukkan seluruh data di form.",
 			icon: "error"
 		});
 	}
@@ -369,8 +349,8 @@ function editData() {
 			console.log(response.data); // Assuming the API returns a token
 
 			Swal.fire({
-				title: "Success!",
-				text: "Data successully uploaded.",
+				title: "Sukses!",
+				text: "Data berhasil di simpan.",
 				icon: "success"
 			}).then((result) => {
 				// Redirect to another page (e.g., dashboard)
@@ -382,8 +362,8 @@ function editData() {
 			console.error("Data failed edited:", error);
 
 			Swal.fire({
-				title: "Data failed edited!",
-				text: "Please check your data and credentials.",
+				title: "Gagal!",
+				text: "Data gagal di simpan.",
 				icon: "error"
 			});
 		});

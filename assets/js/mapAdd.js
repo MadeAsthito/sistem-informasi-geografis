@@ -108,6 +108,7 @@ var drawnItems = new L.FeatureGroup();
 mainMap.addLayer(drawnItems);
 
 var drawControl = new L.Control.Draw({
+	position: "topright",
 	draw: {
 		polyline:  {
 			shapeOptions: {
@@ -242,9 +243,9 @@ function addData() {
 	let data_points = points;
 	if (data_points.length <= 1) {
 		return Swal.fire({
-			title: "Missing Data!",
-			text: "Please insert the polyline position by clicking it on the map.",
-			icon: "error",
+			title: "Data tidak lengkap!",
+			text: "Mohon masukkan polyline dengan mengklik icon polyline di peta pojok kanan atas.",
+			icon: "error"
 		});
 	}
 
@@ -287,7 +288,7 @@ function addData() {
 	) {
 		return Swal.fire({
 			title: "Missing Data!",
-			text: "Please insert all of the data on the form.",
+			text: "Mohon masukkan seluruh data di form.",
 			icon: "error",
 		});
 	}
@@ -323,8 +324,8 @@ function addData() {
 			console.log(response.data); // Assuming the API returns a token
 
 			Swal.fire({
-				title: "Success!",
-				text: "Data successully uploaded.",
+				title: "Sukses!",
+				text: "Data berhasil di simpan.",
 				icon: "success",
 			}).then((result) => {
 				// Redirect to another page (e.g., dashboard)
@@ -335,8 +336,8 @@ function addData() {
 			// Handle error
 			console.error("Data failed uploaded:", error);
 			Swal.fire({
-				title: "Data failed uploaded!",
-				text: "Please check your data and credentials.",
+				title: "Gagal!",
+				text: "Data gagal di simpan.",
 				icon: "error",
 			});
 		});

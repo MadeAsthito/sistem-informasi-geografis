@@ -359,11 +359,11 @@ function deleteData(id) {
 	var token = localStorage.getItem("token");
 
 	Swal.fire({
-		title: "Are you sure wanted to delete this data?",
-		text: "Click Yes if you wanted to proceed",
+		title: "Apakah anda yakin ingin menghapus data ini?",
+		text: "Klik Iya jika anda yakin",
 		showCancelButton: true,
-		confirmButtonText: "Yes",
-		cancelButtonText: `No`
+		confirmButtonText: "Iya",
+		cancelButtonText: `Tidak`
 	}).then((result) => {
 		if (result.isConfirmed) {
 			const api_main_url = localStorage.getItem("api_main_url");
@@ -378,8 +378,8 @@ function deleteData(id) {
 				})
 				.then((response) => {
 					Swal.fire({
-						title: "Success",
-						text: "Data successfully deleted",
+						title: "Sukses!",
+						text: "Data berhasil di simpan.",
 						icon: "success"
 					}).then((result) => {
 						window.location.href = "/index.html";
@@ -388,8 +388,8 @@ function deleteData(id) {
 				.catch((error) => {
 					console.error("Data failed deleted:", error);
 					Swal.fire({
-						title: "Failed",
-						text: "Data failed deleted. Please check your data and credentials.",
+						title: "Gagal!",
+						text: "Data gagal di simpan.",
 						icon: "error"
 					});
 				});
