@@ -75,6 +75,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 		document.getElementById("kodeRuas").value = data_ruas_jalan.kode_ruas;
 		document.getElementById("namaRuas").value = data_ruas_jalan.nama_ruas;
 		document.getElementById("keterangan").value = data_ruas_jalan.keterangan;
+		document.getElementById("panjang").value = (data_ruas_jalan.panjang / 1000).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 		document.getElementById("lebar").value = data_ruas_jalan.lebar;
 
 		let desa = data_region.desa.find((k) => k.id == data_ruas_jalan.desa_id);
@@ -115,7 +116,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 	// FUNGSI MENCARI POINT TENGAH 
 	function findMidpoint(latlngs) {
 		if (latlngs.length === 0) return null;
-	
+
 		var sumLat = 0;
 		var sumLng = 0;
 
@@ -126,7 +127,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 		var midpointLat = sumLat / latlngs.length;
 		var midpointLng = sumLng / latlngs.length;
-	
+
 		return [midpointLat, midpointLng];
 	}
 
@@ -162,7 +163,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 	});
 
 	function clickZoom(e) {
-		mainMap.setView(e.target.getLatLng(),15);
+		mainMap.setView(e.target.getLatLng(), 15);
 	}
 
 	function addPolyline(data_ruas) {
@@ -177,7 +178,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 			.on("click", clickZoom);
 	}
 
-	
+
 	res_url = api_main_url + "api/ruasjalan";
 	const data_ruas = await axios.get(res_url, { headers }).then((response) => {
 		return response.data;
@@ -185,7 +186,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 	const ruas_jalan = data_ruas.ruasjalan;
 	ruas_jalan.forEach((ruas) => {
-		if(ruas.id != edit_id) addPolyline(ruas);
+		if (ruas.id != edit_id) addPolyline(ruas);
 	});
 
 });
@@ -213,7 +214,7 @@ mainMap.addLayer(drawnItems);
 var drawControl = new L.Control.Draw({
 	position: "topright",
 	draw: {
-		polyline:  {
+		polyline: {
 			shapeOptions: {
 				color: 'blue' // Change this color to your desired color
 			}
@@ -230,15 +231,15 @@ var drawControl = new L.Control.Draw({
 mainMap.addControl(drawControl);
 
 mainMap.on("draw:created", function (e) {
-	if(points.length > 0) drawnItems.removeLayer(plylineLayer);
+	if (points.length > 0) drawnItems.removeLayer(plylineLayer);
 
 	var layer = e.layer;
-	
+
 	plylineLayer = layer;
 	points = layer._latlngs;
-	
+
 	console.log(layer._latlngs);
-	
+
 	drawnItems.addLayer(layer);
 });
 

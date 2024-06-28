@@ -110,7 +110,7 @@ mainMap.addLayer(drawnItems);
 var drawControl = new L.Control.Draw({
 	position: "topright",
 	draw: {
-		polyline:  {
+		polyline: {
 			shapeOptions: {
 				color: 'blue' // Change this color to your desired color
 			}
@@ -127,15 +127,21 @@ var drawControl = new L.Control.Draw({
 mainMap.addControl(drawControl);
 
 mainMap.on("draw:created", function (e) {
-	if(points.length > 0) drawnItems.removeLayer(plylineLayer);
+	if (points.length > 0) drawnItems.removeLayer(plylineLayer);
 
 	var layer = e.layer;
-	
+
 	plylineLayer = layer;
 	points = layer._latlngs;
-	
+
 	console.log(layer._latlngs);
-	
+
+	var el_panjang = document.getElementById("panjang");
+	var panjang = mainMap.distance(points[0], points[points.length - 1])
+
+	console.log(panjang);
+	el_panjang.value = (panjang / 1000).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+
 	drawnItems.addLayer(layer);
 });
 
