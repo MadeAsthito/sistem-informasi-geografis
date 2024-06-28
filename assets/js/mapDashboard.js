@@ -197,6 +197,14 @@ document.addEventListener("DOMContentLoaded", async function () {
 		if (data_ruas.jenisjalan_id == 1) color = "blue";
 		if (data_ruas.jenisjalan_id == 2) color = "purple";
 
+		// Custom icon
+		var customIcon = L.divIcon({
+			className: 'custom-marker-icon',
+			html: `<span class="material-icons-sharp" style="font-size: 24px; line-height: 24px;text-align: center;color: ${color};">location_on</span>`,
+			iconSize: [24, 24],
+			iconAnchor: [12, 24] // Adjust anchor point to the middle of the bottom
+		});
+
 		L.polyline(decodedPath, {
 			color: color,
 		})
@@ -205,13 +213,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 				formatContentRuas("Jalan", data_ruas, startPoint[0], startPoint[1])
 			)
 			.on("click", clickZoom);
-		L.marker([startPoint[0], startPoint[1]])
+		L.marker([startPoint[0], startPoint[1]], {icon: customIcon })
 			.addTo(mainMap)
 			.bindPopup(
 				formatContentRuas("Start", data_ruas, startPoint[0], startPoint[1])
 			)
 			.on("click", clickZoom);
-		L.marker([endPoint[0], endPoint[1]])
+		L.marker([endPoint[0], endPoint[1]], {icon: customIcon })
 			.addTo(mainMap)
 			.bindPopup(formatContentRuas("End", data_ruas, endPoint[0], endPoint[1]))
 			.on("click", clickZoom);
