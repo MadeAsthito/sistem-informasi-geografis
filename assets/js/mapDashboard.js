@@ -200,9 +200,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 		// Custom icon
 		var customIcon = L.divIcon({
 			className: 'custom-marker-icon',
-			html: `<span class="material-icons-sharp" style="font-size: 24px; line-height: 24px;text-align: center;color: ${color};">location_on</span>`,
-			iconSize: [24, 24],
-			iconAnchor: [12, 24] // Adjust anchor point to the middle of the bottom
+			html: `<span class="material-icons-sharp" style="font-size: 38px; line-height: 38px;text-align: center;color: ${color};">location_on</span>`,
+			iconSize: [38, 38],
+			iconAnchor: [19, 37] // Adjust anchor point to the middle of the bottom
 		});
 
 		L.polyline(decodedPath, {
