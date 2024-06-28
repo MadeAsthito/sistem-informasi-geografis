@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
 					// Handle error
 					let errorResponse = error.response.data;
 					console.error("Get Data User Failed:", errorResponse);
-					if(errorResponse.code == '403') window.location.href = "/login.html";
+					if (errorResponse.code == '403') window.location.href = "/login.html";
 					Swal.fire({
 						title: "Gagal!",
 						text: "Gagal mengambil data user.",
@@ -130,7 +130,7 @@ function logout() {
 	let token = localStorage.getItem("token");
 
 	Swal.fire({
-		title: "Apakah anda yakin ingin log out?",
+		title: "Apakah anda yakin ingin sign out?",
 		text: "Klik Iya jika anda yakin",
 		showCancelButton: true,
 		confirmButtonText: "Iya",
@@ -167,7 +167,7 @@ function logout() {
 
 					Swal.fire({
 						title: "Sukses!",
-						text: "Berhasil Log Out!",
+						text: "Berhasil Sign Out!",
 						icon: "success",
 						timer: 2000,
 					}).then((result) => {
@@ -180,7 +180,7 @@ function logout() {
 
 					Swal.fire({
 						title: "Gagal!",
-						text: "Gagal Log Out!",
+						text: "Gagal Sign Out!",
 						icon: "error",
 					});
 				});
