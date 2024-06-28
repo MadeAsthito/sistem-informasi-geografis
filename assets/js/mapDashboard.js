@@ -39,6 +39,20 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 	selectLegend.addTo(mainMap);
 
+	/*Legend specific*/
+	var addDataLegend = L.control({ position: "bottomleft" });
+
+	addDataLegend.onAdd = function (mainMap) {
+		var div = L.DomUtil.create("div", "addDataLegend");
+
+		div.innerHTML += '<a href="./add_data.html" class="btn btn-primary text-white">+ Tambah Data Jalan</a>';
+
+		return div;
+	};
+
+	addDataLegend.addTo(mainMap);
+
+
 	const token = localStorage.getItem("token");
 	const api_main_url = localStorage.getItem("api_main_url");
 	let res_url = api_main_url + "api/mregion";
