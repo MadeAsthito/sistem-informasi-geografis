@@ -10,35 +10,34 @@ document.addEventListener("DOMContentLoaded", function () {
 			// GET USER
 			let userName = localStorage.getItem("username");
 			const el_name = document.getElementById("username");
-			if (!userName) {
-				let api_main_url = localStorage.getItem("api_main_url");
-				let res_url = api_main_url + "api/user";
-				let headers = {
-					Authorization: `Bearer ${token}`,
-					"Content-Type": "application/json",
-				};
-				console.log("GET USER");
-				axios
-					.get(res_url, { headers })
-					.then((response) => {
-						let dataResponse = response.data.data;
-						let userName = dataResponse.user.name;
+			let api_main_url = localStorage.getItem("api_main_url");
+			let res_url = api_main_url + "api/user";
+			let headers = {
+				Authorization: `Bearer ${token}`,
+				"Content-Type": "application/json",
+			};
+			console.log("GET USER");
+			axios
+				.get(res_url, { headers })
+				.then((response) => {
+					let dataResponse = response.data.data;
+					console.log(dataResponse);
+					let userName = dataResponse.user.name;
 
-						localStorage.setItem("username", userName);
-						el_name.innerHTML = userName;
-					})
-					.catch((error) => {
-						// Handle error
-						console.error("Get Data User Failed:", error);
-						Swal.fire({
-							title: "Error!",
-							text: "Get Data User Failed.",
-							icon: "error"
-						});
+					localStorage.setItem("username", userName);
+					el_name.innerHTML = userName;
+				})
+				.catch((error) => {
+					// Handle error
+					let errorResponse = error.response.data;
+					console.error("Get Data User Failed:", errorResponse);
+					if(errorResponse.code == '403') window.location.href = "/login.html";
+					Swal.fire({
+						title: "Error!",
+						text: "Get Data User Failed.",
+						icon: "error",
 					});
-			} else {
-				el_name.innerHTML = userName;
-			}
+				});
 		}
 	}
 });
@@ -113,7 +112,7 @@ function register() {
 				Swal.fire({
 					title: "Success!",
 					text: message,
-					icon: "success"
+					icon: "success",
 				}).then((result) => {
 					window.location.href = "/login.html";
 				});
@@ -135,7 +134,7 @@ function logout() {
 		text: "Click Yes if you wanted to proceed",
 		showCancelButton: true,
 		confirmButtonText: "Yes",
-		cancelButtonText: `No`
+		cancelButtonText: `No`,
 	}).then((result) => {
 		if (result.isConfirmed) {
 			let api_main_url = localStorage.getItem("api_main_url");
@@ -165,12 +164,12 @@ function logout() {
 					localStorage.removeItem("user");
 					localStorage.removeItem("username");
 					localStorage.removeItem("api_url");
-					
+
 					Swal.fire({
 						title: "Success!",
 						text: "Logging Out successfull!",
 						icon: "success",
-						timer: 2000
+						timer: 2000,
 					}).then((result) => {
 						window.location.href = "/login.html";
 					});
@@ -182,7 +181,7 @@ function logout() {
 					Swal.fire({
 						title: "Error!",
 						text: "Logging Out Failed!",
-						icon: "error"
+						icon: "error",
 					});
 				});
 
@@ -191,7 +190,6 @@ function logout() {
 			Swal.fire("Changes are not saved", "", "info");
 		}
 	});
-
 }
 
 function goToDashboard() {
