@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
 	// CHECK IF NOT IN LOGIN / REGISTER PAGE
-	const noAuth = ["/login.html", "/register.html", "login", "register"];
+	var noAuth = ["/login.html", "/register.html", "login", "register"];
 	console.log("Checking Auth.....");
 	if (!noAuth.includes(window.location.pathname)) {
 		// CHECK TOKEN
