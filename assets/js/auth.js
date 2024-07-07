@@ -1,8 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
 	// CHECK IF NOT IN LOGIN / REGISTER PAGE
 	const noAuth = ["/login.html", "/register.html", "login", "register"];
+	console.log("Checking Auth.....");
 	if (!noAuth.includes(window.location.pathname)) {
 		// CHECK TOKEN
+		console.log("On Application");
 		const token = localStorage.getItem("token");
 		if (!token) {
 			window.location.href = "/login.html";
@@ -31,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
 					// Handle error
 					let errorResponse = error.response.data;
 					console.error("Get Data User Failed:", errorResponse);
-					if (errorResponse.code == '403') window.location.href = "/login.html";
+					if (errorResponse.code == "403") window.location.href = "/login.html";
 					Swal.fire({
 						title: "Gagal!",
 						text: "Gagal mengambil data user.",
